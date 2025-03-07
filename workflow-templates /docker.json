@@ -1,0 +1,12 @@
+{
+    "name": "Docker",
+    "description": "GTO Wizard docker workflow.",
+    "iconName": "zap",
+    "categories": [
+        "Go"
+    ],
+    "filePatterns": [
+        "^Dockerfile",
+        ".*\\.md$"
+    ]
+}

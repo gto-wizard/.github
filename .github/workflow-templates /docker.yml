@@ -3,11 +3,11 @@ name: Docker
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ $default-branch ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ $default-branch ]
 
 
 env:

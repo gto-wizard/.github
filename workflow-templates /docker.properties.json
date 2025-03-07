@@ -3,7 +3,8 @@
     "description": "GTO Wizard docker workflow.",
     "iconName": "zap",
     "categories": [
-        "Go"
+        "Continuous integration",
+        "Deployment"
     ],
     "filePatterns": [
         "^Dockerfile",

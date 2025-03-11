@@ -18,16 +18,16 @@ on:
         description: name for the image
       DOCKER_PLATFORMS:
         type: string
-        required: false
-        default: linux/amd64,linux/arm64
+        default: "linux/amd64,linux/arm64"
+        description: List of target platforms for build
       DOCKER_CONTEXT:
         type: string
-        required: false
-        default: .
+        default: "."
+        description: Build's context is the set of files located in the specified PATH or URL
       DOCKER_FILE:
         type: string
-        required: false
-        default: .
+        default: "./Dockerfile"
+        description: Path to the Dockerfile
  
 
 jobs:

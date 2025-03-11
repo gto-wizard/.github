@@ -16,14 +16,19 @@ on:
         required: true
         type: string
         description: name for the image
-
-env:
-  # # Use docker.io for Docker Hub if empty
-  AWS_ROLE_ARN: "arn:aws:iam::277064527133:role/github-actions"
-  AWS_REGION: eu-central-1
-  REGISTRY: 277064527133.dkr.ecr.eu-central-1.amazonaws.com
-  IMAGE_NAME: ${{ inputs.IMAGE_NAME }} 
-  
+      DOCKER_PLATFORMS:
+        type: string
+        required: false
+        default: linux/amd64,linux/arm64
+      DOCKER_CONTEXT:
+        type: string
+        required: false
+        default: .
+      DOCKER_FILE:
+        type: string
+        required: false
+        default: .
+ 
 
 jobs:
   build:
@@ -44,8 +49,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ env.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: "arn:aws:iam::277064527133:role/github-actions"
+          aws-region: "eu-central-1"
 
 
       - name: Login to Amazon ECR
@@ -65,9 +70,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: 277064527133.dkr.ecr.eu-central-1.amazonaws.com/${{ inputs.IMAGE_NAME }} 
           tags: |
             type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
         # env:
         #   DOCKER_METADATA_SHORT_SHA_LENGTH: 12
 
@@ -78,9 +84,12 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
-          context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          context: ${{ inputs.DOCKER_CONTEXT }}
+          file: ${{ inputs.DOCKER_FILE }}
+          platforms: ${{ inputs.DOCKER_FILE }}
+

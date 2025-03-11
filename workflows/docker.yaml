@@ -1,14 +1,16 @@
 name: Docker
 
 
-on:
-  push:
-    branches: [ $default-branch ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ $default-branch ]
+# on:
+#   push:
+#     branches: [ $default-branch ]
+#     # Publish semver tags as releases.
+#     tags: [ 'v*.*.*' ]
+#   pull_request:
+#     branches: [ $default-branch ]
 
+on:
+  workflow_call
 
 env:
   # # Use docker.io for Docker Hub if empty

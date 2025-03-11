@@ -10,7 +10,11 @@ name: Docker
 #     branches: [ $default-branch ]
 
 on:
-  workflow_call
+  workflow_call:
+    inputs:
+      IMAGE_NAME:
+        required: true
+        type: string
 
 env:
   # # Use docker.io for Docker Hub if empty

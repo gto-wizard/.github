@@ -28,7 +28,10 @@ on:
         type: string
         default: "./Dockerfile"
         description: Path to the Dockerfile
- 
+      DOCKER_BUILD_ARGS:
+        type: string
+        description: List of build-time variables ## Ref: https://docs.docker.com/reference/cli/docker/buildx/build/#build-arg
+        ## example: SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
 
 jobs:
   build:

@@ -62,10 +62,10 @@ jobs:
           role-to-assume: "arn:aws:iam::277064527133:role/github-actions"
           aws-region: "eu-central-1"
 
-
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
+      ## Install QEMU static binaries for cross platform docker build
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 

@@ -97,4 +97,4 @@ jobs:
           context: ${{ inputs.DOCKER_CONTEXT }}
           file: ${{ inputs.DOCKER_FILE }}
           platforms: ${{ inputs.DOCKER_PLATFORMS }}
-    
+          build-args: ${{ inputs.DOCKER_BUILD_ARGS }}

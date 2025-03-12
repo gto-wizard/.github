@@ -34,6 +34,12 @@ on:
         ## example: SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
 
         ## TODO use organization variables for AWS data
+
+env:
+  ECR_REGISTRY: 277064527133.dkr.ecr.eu-central-1.amazonaws.com
+
+
+
 jobs:
   build:
 
@@ -74,7 +80,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
-          images: 277064527133.dkr.ecr.eu-central-1.amazonaws.com/${{ inputs.IMAGE_NAME }} 
+          images: ${{ env.ECR_REGISTRY }}/${{ inputs.IMAGE_NAME }} 
           tags: |
             type=sha
             type=raw,value=latest,enable={{is_default_branch}}
@@ -91,9 +97,14 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # cache-from: type=gha
+          # cache-to: type=gha,mode=max
+          cache-from: ref=${{ env.ECR_REGISTRY }}/cache:${{ inputs.IMAGE_NAME }},type=registry
+          cache-to: ref=${{ env.ECR_REGISTRY }}/cache:${{ inputs.IMAGE_NAME }},type=registry,mode=max,image-manifest=true,oci-mediatypes=true
           context: ${{ inputs.DOCKER_CONTEXT }}
           file: ${{ inputs.DOCKER_FILE }}
           platforms: ${{ inputs.DOCKER_PLATFORMS }}
 
+
+
+    

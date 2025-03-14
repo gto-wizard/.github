@@ -1,4 +1,4 @@
-name: Frontend deploy
+name: Deploy frontend
 
 on:
   workflow_call:
@@ -21,7 +21,7 @@ on:
         description: Directory where are stored artifacts from build process.
 
 jobs:
-  frontend-deploy:
+  deploy-frontend:
     name: 🎖️ Deploy frontend image
     runs-on: ${{ inputs.RUNNER_LABEL }}
     environment: ${{ inputs.ENVIRONMENT }}

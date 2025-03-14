@@ -67,12 +67,9 @@ jobs:
         run: npm install
 
       - name: Export Build Variables
-        run: |
-          echo "${{ inputs.BUILD_VARIABLES }}" | while IFS="=" read -r key value; do
-            key=$(echo $key | xargs)  # Trim spaces
-            value=$(echo $value | xargs)  # Trim spaces
-            echo "$key=$value" >> $GITHUB_ENV
-          done
+        uses: mikefarah/yq@8bf425b4d1344db7cd469a8d10a390876e0c77fd # pin@v4.45.1
+        with:
+          cmd: echo "${{ inputs.BUILD_VARIABLES }}" | yq -r 'to_entries | .[] | "\(.key)=\(.value)"' >> $GITHUB_ENV
 
       - name: Build project
         working-directory: ${{ inputs.WORKING_DIR }}

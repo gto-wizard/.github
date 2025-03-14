@@ -1,4 +1,4 @@
-name: Build frontend
+name: Frontend build
 
 on:
   workflow_call:
@@ -40,7 +40,7 @@ on:
         description: How long to keep build artifact files in a Github repository.
 
 jobs:
-  build-frontend:
+  frontend-build:
     name: 🏗 Build frontend image
     runs-on: ${{ inputs.RUNNER_LABEL }}
 

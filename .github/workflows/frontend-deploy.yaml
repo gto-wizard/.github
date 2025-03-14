@@ -39,10 +39,11 @@ jobs:
         uses: cloudflare/wrangler-action@392082e81ffbcb9ebdde27400634aa004b35ea37 # pin@v3.14.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: pages deploy \
-            --project-name "${{ github.event.repository.name }}" \
-            --branch "${{ vars.CLOUDFLARE_BRANCH }}" \
-            --commit-hash "${{ github.sha }}" \
-            --commit-message "${{ github.event.head_commit.message }}" \
-            --commit-dirty false \
+          command: >
+            pages deploy
+            --project-name "${{ github.event.repository.name }}"
+            --branch "${{ vars.CLOUDFLARE_BRANCH }}"
+            --commit-hash "${{ github.sha }}"
+            --commit-message "${{ github.event.head_commit.message }}"
+            --commit-dirty false
             ${{ inputs.ARTIFACTS_DIR }}

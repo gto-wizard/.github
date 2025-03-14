@@ -45,7 +45,7 @@ on:
 
 jobs:
   build-frontend:
-    name: 🏗 Build frontend image
+    name: 🏗 Build image
     runs-on: ${{ inputs.BUILD_RUNNER_LABEL }}
     steps:
       - name: Checkout repository
@@ -86,7 +86,7 @@ jobs:
           retention-days: ${{ inputs.ARTIFACTS_RETENTION }}
 
   deploy-frontend:
-    name: 🎖️ Deploy frontend image
+    name: 🎖️ Deploy image
     runs-on: ${{ inputs.DEPLOY_RUNNER_LABEL }}
     needs: build-frontend
     environment: ${{ inputs.ENVIRONMENT }}

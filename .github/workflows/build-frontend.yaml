@@ -25,7 +25,7 @@ on:
         description: Proper environment definition, i.e. (dev, prod, staging).
       BUILD_SCRIPT:
         type: string
-        required: true
+        default: build
         description: Custom build script definition.
       BUILD_VARIABLES:
         type: string
@@ -53,13 +53,26 @@ jobs:
         with:
           node-version: ${{ inputs.NODEJS_VERSION }}
 
+      - name: Cache npm dependencies
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # pin@v4.2.2
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-${{ inputs.NODEJS_VERSION }}-${{ inputs.ENVIRONMENT }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-${{ inputs.NODEJS_VERSION }}-${{ inputs.ENVIRONMENT }}-
+            npm-${{ runner.os }}-${{ inputs.NODEJS_VERSION }}-
+
       - name: Install dependencies
         working-directory: ${{ inputs.WORKING_DIR }}
         run: npm install
 
       - name: Export Build Variables
         run: |
-          echo '${{ inputs.BUILD_VARIABLES }}' | jq -r 'to_entries|map("export \(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+          echo "${{ inputs.BUILD_VARIABLES }}" | while IFS="=" read -r key value; do
+            key=$(echo $key | xargs)  # Trim spaces
+            value=$(echo $value | xargs)  # Trim spaces
+            echo "$key=$value" >> $GITHUB_ENV
+          done
 
       - name: Build project
         working-directory: ${{ inputs.WORKING_DIR }}

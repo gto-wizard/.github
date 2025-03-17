@@ -42,6 +42,9 @@ on:
         type: number
         default: 1
         description: How long to keep build artifact files in a Github repository.
+      CLOUDFLARE_BRANCH:
+        type: string
+        description: Optional Cloudflare Pages branch definition.
 
 jobs:
   build-frontend:
@@ -71,6 +74,7 @@ jobs:
 
       - name: Export Build Variables
         uses: mikefarah/yq@8bf425b4d1344db7cd469a8d10a390876e0c77fd # pin@v4.45.1
+        if: inputs.BUILD_VARIABLES != ''
         with:
           cmd: echo "${{ inputs.BUILD_VARIABLES }}" | yq -r 'to_entries | .[] | "\(.key)=\(.value)"' >> $GITHUB_ENV
 
@@ -107,7 +111,7 @@ jobs:
           command: >
             pages deploy
             --project-name "${{ github.event.repository.name }}"
-            --branch "${{ vars.CLOUDFLARE_BRANCH }}"
+            --branch "${{ vars.CLOUDFLARE_BRANCH && vars.CLOUDFLARE_BRANCH || github.ref_name }}"
             --commit-hash "${{ github.sha }}"
             --commit-message "${{ github.event.head_commit.message }}"
             --commit-dirty false
